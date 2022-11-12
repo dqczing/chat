@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require("electron");
+const path = require('path');
+const isDev = require('electron-is-dev');
 
 class AppWindow extends BrowserWindow {
   constructor(config, urlLocation) {
@@ -28,7 +30,7 @@ app.on("ready", () => {
     width: 1440,
     height: 768,
   };
-  const urlLocation = "http://localhost:5173";
+  const urlLocation  = isDev ? 'http://127.0.0.1:5173' : `file://${path.join(__dirname, './dist/index.html')}`
   mainWindow = new AppWindow(mainWindowConfig, urlLocation);
   mainWindow.on("closed", () => {
     mainWindow = null;
