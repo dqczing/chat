@@ -5,8 +5,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 const Cube: React.FC<{
   cubeColor: string;
   cubeSize: number;
+  cameraFov: number;
 }> = (props): JSX.Element => {
-  const { cubeColor, cubeSize } = props;
+  const { cubeColor, cubeSize, cameraFov } = props;
   console.log(cubeColor, cubeSize)
   useEffect(() => {
     const canvasEle = document.createElement("div");
@@ -14,7 +15,7 @@ const Cube: React.FC<{
     console.log(THREE);
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+        cameraFov,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
@@ -60,7 +61,7 @@ const Cube: React.FC<{
       window.cancelAnimationFrame(animateId);
     }
     animate();
-  }, [cubeColor, cubeSize]);
+  }, [cubeColor, cubeSize, cameraFov]);
   return <div></div>;
 };
 

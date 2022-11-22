@@ -5,6 +5,7 @@ function App() {
   const [cubeColor, setCubeColor] = useState<string>("red");
   const [cubeSize, setCubeSize] = useState<number>(1);
   const [isCubeAnimate, setIsCubeAnimate] = useState<number>(0);
+  const [cameraFov, setCameraFov] = useState<number>(75);
   const onCubeColorChange = (e: any) => {
     console.log(e.target.value);
     setCubeColor(e.target.value);
@@ -16,6 +17,10 @@ function App() {
   const onIsCubeAnimateChange = (e: any) => {
     console.log(e.target.value);
     setIsCubeAnimate(e.target.value);
+  };
+  const onFovChange = (e: any) => {
+    console.log(e.target.value);
+    setCameraFov(e.target.value);
   };
   return (
     <div>
@@ -37,12 +42,19 @@ function App() {
             <option value={3}>大</option>
           </select>
         </div>
+        <div style={styles.conditionEle}>
+          <div>相机角度：</div>
+          <select onChange={onFovChange} value={cameraFov}>
+            <option value={75}>75度</option>
+            <option value={45}>45度</option>
+          </select>
+        </div>
         {/* <select onChange={onIsCubeAnimateChange} value={isCubeAnimate}>
           <option value={0}>停止动画</option>
           <option value={1}>执行动画</option>
         </select> */}
       </div>
-      <Cube cubeColor={cubeColor} cubeSize={cubeSize} />
+      <Cube cubeColor={cubeColor} cubeSize={cubeSize} cameraFov={cameraFov} />
     </div>
   );
 }
