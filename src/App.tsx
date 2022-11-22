@@ -1,55 +1,34 @@
-import { StreamChat } from "stream-chat";
-import {
-  Chat,
-  Channel,
-  ChannelHeader,
-  MessageInput,
-  MessageList,
-  Thread,
-  Window,
-} from "stream-chat-react";
-import {
-  API_KEY,
-  CHAT_USER_TOKEN,
-  USER_ID,
-  USER_NAME,
-  USER_IMAGE,
-} from "./../lib/constants";
-import { ChannelType } from "./../lib/enums";
-import "./../styles/layout.css";
-
-import "stream-chat-react/dist/css/v2/index.css";
-
-const chatClient = new StreamChat(API_KEY);
-
-chatClient.connectUser(
-  {
-    id: USER_ID,
-    name: USER_NAME,
-    image: USER_IMAGE,
-  },
-  CHAT_USER_TOKEN
-);
-
-const channel = chatClient.channel(ChannelType.Messaging, "custom_channel_id", {
-  // add as many custom fields as you'd like
-  image: "https://www.drupal.org/files/project-images/react.png",
-  name: "Talk about React",
-  members: ["fragrant-block-8"],
-});
+import { useLayoutEffect } from 'react';
+import * as THREE from 'three';
 
 function App() {
+  useLayoutEffect(() => {
+    const canvasEle = document.createElement('div');
+    canvasEle.id = 'cubeCanvas';
+    console.log(THREE)
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    camera.position.set(0, 0, 10);
+    scene.add(camera);
+    const cubeGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+    const cubeMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    scene.add( cube );
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    console.log(renderer);
+    const cubeCanvas = document.getElementById('cubeCanvas');
+    if (cubeCanvas) {
+      cubeCanvas.firstChild.replaceWidth(renderer.domElement);
+    } else {
+        canvasEle.appendChild(renderer.domElement);
+
+        document.body.appendChild(canvasEle);
+    }
+    renderer.render(scene, camera);
+  }, []);
   return (
-    <Chat client={chatClient} theme="str-chat__theme-light">
-      <Channel channel={channel}>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-        </Window>
-        <Thread />
-      </Channel>
-    </Chat>
+    <div></div>
   );
 }
 
