@@ -1,42 +1,61 @@
-import { useLayoutEffect } from 'react';
-import * as THREE from 'three';
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+import Cube from "./components/cube";
+import { useState } from "react";
 
 function App() {
-  useLayoutEffect(() => {
-    const canvasEle = document.createElement('div');
-    canvasEle.id = 'cubeCanvas';
-    console.log(THREE)
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    camera.position.set(0, 0, 10);
-    scene.add(camera);
-    const cubeGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const cubeMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
-    scene.add( cube );
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    console.log(renderer);
-    const cubeCanvas = document.getElementById('cubeCanvas');
-    if (cubeCanvas) {
-      cubeCanvas.firstChild.replaceWidth(renderer.domElement);
-    } else {
-        canvasEle.appendChild(renderer.domElement);
-
-        document.body.appendChild(canvasEle);
-    }
-    // renderer.render(scene, camera);
-    const controls = new OrbitControls( camera, renderer.domElement );
-    function animate() {
-      renderer.render( scene, camera );
-      requestAnimationFrame( animate );
-    }
-    animate();
-  }, []);
+  const [cubeColor, setCubeColor] = useState<string>("red");
+  const [cubeSize, setCubeSize] = useState<number>(1);
+  const [isCubeAnimate, setIsCubeAnimate] = useState<number>(0);
+  const onCubeColorChange = (e: any) => {
+    console.log(e.target.value);
+    setCubeColor(e.target.value);
+  };
+  const onCubeSizeChange = (e: any) => {
+    console.log(e.target.value);
+    setCubeSize(e.target.value);
+  };
+  const onIsCubeAnimateChange = (e: any) => {
+    console.log(e.target.value);
+    setIsCubeAnimate(e.target.value);
+  };
   return (
-    <div></div>
+    <div>
+      <div style={styles.conditionWrapper}>
+        <div style={styles.conditionEle}>
+          <div>颜色：</div>
+          <select onChange={onCubeColorChange} value={cubeColor}>
+            <option value="red">红色</option>
+            <option value="yellow">黄色</option>
+            <option value="blue">蓝色</option>
+            <option value="green">绿色</option>
+          </select>
+        </div>
+        <div style={styles.conditionEle}>
+          <div>尺寸：</div>
+          <select onChange={onCubeSizeChange} value={cubeSize}>
+            <option value={1}>小</option>
+            <option value={2}>中</option>
+            <option value={3}>大</option>
+          </select>
+        </div>
+        {/* <select onChange={onIsCubeAnimateChange} value={isCubeAnimate}>
+          <option value={0}>停止动画</option>
+          <option value={1}>执行动画</option>
+        </select> */}
+      </div>
+      <Cube cubeColor={cubeColor} cubeSize={cubeSize} />
+    </div>
   );
 }
+
+const styles = {
+  conditionWrapper: {
+    margin: 10,
+    display: 'flex'
+  },
+  conditionEle: {
+    marginRight: 5,
+    display: 'flex'
+  }
+};
 
 export default App;
