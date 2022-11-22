@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react';
 import * as THREE from 'three';
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 
 function App() {
   useLayoutEffect(() => {
@@ -25,7 +26,13 @@ function App() {
 
         document.body.appendChild(canvasEle);
     }
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
+    const controls = new OrbitControls( camera, renderer.domElement );
+    function animate() {
+      renderer.render( scene, camera );
+      requestAnimationFrame( animate );
+    }
+    animate();
   }, []);
   return (
     <div></div>
